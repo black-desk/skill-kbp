@@ -55,7 +55,7 @@ how to backport Linux kernel changes from newer versions to older ones.
 Install the skill to user level:
 
 ```bash
-./scripts/install.sh
+./tools/install.sh
 ```
 
 Since the backport process requires two git worktrees, this skill does not

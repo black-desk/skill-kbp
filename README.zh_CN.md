@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
 将技能安装到用户级别：
 
 ```bash
-./scripts/install.sh
+./tools/install.sh
 ```
 
 由于backport过程会使用到两个git worktree，该技能不支持安装到项目目录。
