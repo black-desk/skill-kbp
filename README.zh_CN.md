@@ -4,9 +4,7 @@ SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn>
 SPDX-License-Identifier: MIT
 -->
 
-<!-- TODO: 更新项目名称 -->
-
-# 模版
+# 内核特性前向移植技能
 
 [![checks][badge-shields-io-checks]][actions]
 [![commit activity][badge-shields-io-commit-activity]][commits]
@@ -15,74 +13,59 @@ SPDX-License-Identifier: MIT
 ![commits since release][badge-shields-io-commits-since-release]
 [![codecov][badge-shields-io-codecov]][codecov]
 
-<!-- TODO: 更新项目链接 -->
-
 [badge-shields-io-checks]:
-  https://img.shields.io/github/check-runs/black-desk/template/master
+  https://img.shields.io/github/check-runs/black-desk/skill-kbp/master
 
-<!-- TODO: 更新项目链接 -->
-
-[actions]: https://github.com/black-desk/template/actions
-
-<!-- TODO: 更新项目链接 -->
+[actions]: https://github.com/black-desk/skill-kbp/actions
 
 [badge-shields-io-commit-activity]:
-  https://img.shields.io/github/commit-activity/w/black-desk/template/master
+  https://img.shields.io/github/commit-activity/w/black-desk/skill-kbp/master
 
-<!-- TODO: 更新项目链接 -->
-
-[commits]: https://github.com/black-desk/template/commits/master
-
-<!-- TODO: 更新项目链接 -->
+[commits]: https://github.com/black-desk/skill-kbp/commits/master
 
 [badge-shields-io-contributors]:
-  https://img.shields.io/github/contributors/black-desk/template
+  https://img.shields.io/github/contributors/black-desk/skill-kbp
 
-<!-- TODO: 更新项目链接 -->
-
-[contributors]: https://github.com/black-desk/template/graphs/contributors
-
-<!-- TODO: 更新项目链接 -->
+[contributors]: https://github.com/black-desk/skill-kbp/graphs/contributors
 
 [badge-shields-io-release-date]:
-  https://img.shields.io/github/release-date/black-desk/template
+  https://img.shields.io/github/release-date/black-desk/skill-kbp
 
-<!-- TODO: 更新项目链接 -->
-
-[releases]: https://github.com/black-desk/template/releases
-
-<!-- TODO: 更新项目链接 -->
+[releases]: https://github.com/black-desk/skill-kbp/releases
 
 [badge-shields-io-commits-since-release]:
-  https://img.shields.io/github/commits-since/black-desk/template/latest
-
-<!-- TODO: 更新项目链接 -->
+  https://img.shields.io/github/commits-since/black-desk/skill-kbp/latest
 
 [badge-shields-io-codecov]:
-  https://codecov.io/github/black-desk/template/graph/badge.svg?token=6TSVGQ4L9X
-[codecov]: https://codecov.io/github/black-desk/template
+  https://codecov.io/github/black-desk/skill-kbp/graph/badge.svg?token=6TSVGQ4L9X
+[codecov]: https://codecov.io/github/black-desk/skill-kbp
 
 [en](README.md) | zh_CN
 
-<!-- TODO: 添加项目简介 -->
+一个用于 Linux 内核变动 backport 的 Claude Code 技能。该技能说明应当如何将Linux内核的变动从较新版本移植到较旧版本。
+
+## 安装
+
+将技能安装到用户级别：
+
+```bash
+./scripts/install.sh
+```
+
+由于backport过程会使用到两个git worktree，该技能不支持安装到项目目录。
 
 ## 使用
 
-<!-- TODO: 添加项目使用说明 -->
+安装完成后，您可以在 Claude Code 中使用：
 
-1. 使用gh，从模版创建仓库：
+```
+/kbp <上游工作区> <起始commit> <目标工作区>
+```
 
-   ```bash
-   gh repo create --public --template black-desk/template
-   ```
-
-2. 编辑项目文件，填充内容后移除所有的`TODO`。
-
-3. 运行检查脚本，确定所有`TODO`均已被移除：
-
-   ```bash
-   ./scripts/ls-todo.sh
-   ```
+参数说明：
+- `<上游工作区>`：包含上游内核源码的 git worktree 路径
+- `<起始commit>`：起始 commit，从该 commit 到 HEAD 的所有提交都将被 backport
+- `<目标工作区>`：应用变更的目标 git worktree 路径
 
 ## 许可证
 
