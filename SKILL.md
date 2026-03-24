@@ -32,15 +32,22 @@ Only proceed to the analysis phase after both branches compile successfully.
    understand what changes are in the commits. Identify all files modified and
    the nature of each change.
 
-3. **Identify dependencies**: For each commit, start a subagent in the upstream
+3. **Identify compilation configuration**: Analyze the upstream commits to
+   determine what kernel configuration options (Kconfig symbols) are required
+   to enable the feature being backported. This includes:
+   - Identify all `CONFIG_*` symbols that control the feature
+   - Determine the dependencies between these configuration options
+   - Document the minimal configuration needed to compile and enable the feature
+
+4. **Identify dependencies**: For each commit, start a subagent in the upstream
    worktree to determine what kernel APIs, structures, or features it depends
    on.
 
-4. **Check target kernel version**: Start a subagent to determine the target
+5. **Check target kernel version**: Start a subagent to determine the target
    kernel version by examining the Makefile or version files in the target
    worktree.
 
-5. **Decide how to backport the changes**: Start a subagent to analyze how to
+6. **Decide how to backport the changes**: Start a subagent to analyze how to
    backport these changes. This analysis must:
 
    - **Thoroughly read the upstream commits**: Carefully read the source code
@@ -62,7 +69,7 @@ Only proceed to the analysis phase after both branches compile successfully.
    - Explicitly mark which commits are dependencies and which are the target
      commits to backport
 
-6. **Execute the backport plan**: Execute the plan **commit by commit** in the
+7. **Execute the backport plan**: Execute the plan **commit by commit** in the
    order specified in the plan (dependencies first, then target commits). For
    each commit:
 
@@ -70,6 +77,14 @@ Only proceed to the analysis phase after both branches compile successfully.
      adaptation)
    - After the initial backport, start a **separate subagent** to fix any
      compilation issues and ensure the code compiles successfully
+   - **Verify the feature is actually compiled**: The compilation verification
+     must ensure that the backported feature is actually being compiled, not
+     just that the kernel compiles without errors. This requires:
+     - Enable the necessary configuration options identified in step 3
+     - Verify that the relevant source files are being compiled by checking
+       the build output or object file generation
+     - Confirm that the feature's code paths are reachable with the current
+       configuration
    - Only proceed to the next commit after the current commit compiles and is
      committed
 
