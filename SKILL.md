@@ -28,12 +28,25 @@ worktree $ARGUMENTS[0] to target worktree $ARGUMENTS[2].
    should present possible backport plans, then let the user decide which plan
    to follow. The plan must:
 
-   - For each resulting commit in order, describe the changes and list the
-     corresponding upstream commit(s) from the reference branch (including
-     commit hashes and titles for traceability)
+   - List all commits to backport in order, including dependency commits first
+     (if any), followed by the target commits
+   - For each commit, describe the changes and list the corresponding upstream
+     commit hash and title for traceability
+   - Explicitly mark which commits are dependencies and which are the target
+     commits to backport
 
-5. **Execute the backport plan**: For each planned commit, start a subagent to
-   execute the plan one by one. Each subagent must:
+5. **Execute the backport plan**: Execute the plan **commit by commit** in the
+   order specified in the plan (dependencies first, then target commits). For
+   each commit:
+
+   - Start a subagent to perform the initial backport (cherry-pick or manual
+     adaptation)
+   - After the initial backport, start a **separate subagent** to fix any
+     compilation issues and ensure the code compiles successfully
+   - Only proceed to the next commit after the current commit compiles and is
+     committed
+
+   Requirements for each backport subagent:
 
    - Prefer cherry-pick when possible: If a target commit can be achieved by
      cherry-picking an upstream commit, use `git cherry-pick -x` to preserve
@@ -41,7 +54,6 @@ worktree $ARGUMENTS[0] to target worktree $ARGUMENTS[2].
    - Allow finer commit splitting: The agent may split the planned work into
      smaller commits if it better matches the upstream commit structure, but
      should strive to maintain correspondence with upstream commits
-   - Ensure the code compiles successfully
    - Commit with proper traceability: Every commit must reference its upstream
      source. If cherry-pick is not applicable, manually include the original
      upstream commit hash in the commit message for traceability
